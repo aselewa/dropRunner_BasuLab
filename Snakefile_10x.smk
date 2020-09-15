@@ -68,7 +68,7 @@ rule trim_R1:
     output:
         fastq + "{sample}_R1_trimmed_001.fastq.gz"
     shell:
-        "cutadapt -u -2 -o {output} {input}"
+        "cutadapt --length 28 -o {output} {input}"
         
 rule align:
     input:

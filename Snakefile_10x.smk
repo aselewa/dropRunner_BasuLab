@@ -62,9 +62,17 @@ rule unzip_whitelist:
     shell:
         "gunzip -c {input} > {output}"
 
+rule trim_R1:
+    input:
+        fastq + "{sample}_R1_001.fastq.gz"
+    output:
+        fastq + "{sample}_R1_trimmed_001.fastq.gz"
+    shell:
+        "cutadapt -u -2 -o {output} {input}"
+        
 rule align:
     input:
-        bc_read = fastq + "{sample}_R1_001.fastq.gz",
+        bc_read = fastq + "{sample}_R1_trimmed_001.fastq.gz",
         cDNA_read = fastq + "{sample}_R2_001.fastq.gz",
         ref_genome = GenomeIndex,
         whitelist = output + "barcodes_for_star.txt"
